@@ -15,7 +15,7 @@ function getWebviewContent(context: vscode.ExtensionContext, panel: vscode.Webvi
 
     // Sostituisci i placeholder nel file HTML con gli URI effettivi
     htmlContent = htmlContent.replace(/<script src="scripts.js"><\/script>/, `<script src="${scriptUri}"></script>`);
-    htmlContent = htmlContent.replace(/<link rel="stylesheet" href="style.css">/, `<link rel="stylesheet" href="${styleUri}">`);
+    htmlContent = htmlContent.replace(/<link rel="stylesheet" href="styles.css">/, `<link rel="stylesheet" href="${styleUri}">`);
 
     return htmlContent;
 }
