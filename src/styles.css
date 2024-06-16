@@ -1,0 +1,127 @@
+body {
+    background-color: #f8f9fa;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.chat-container {
+    width: 100%;
+    max-width: 600px;
+    margin: 10px;
+    background: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    height: calc(100vh - 20px);
+}
+.chat-header {
+    background: #007bff;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+}
+.chat-body {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+.chat-message {
+    margin-bottom: 15px;
+    display: flex;
+    word-wrap: break-word;
+}
+.chat-message.user .message {
+    background: #007bff;
+    color: white;
+    margin-left: auto;
+}
+.chat-message.bot .message {
+    background: #e9ecef;
+    color: #343a40;
+}
+.message {
+    max-width: 75%;
+    padding: 10px 15px;
+    border-radius: 20px;
+    word-wrap: break-word;
+    word-break: break-word;
+    overflow-wrap: break-word;
+}
+.chat-footer {
+    display: flex;
+    padding: 10px 20px;
+    border-top: 1px solid #e9ecef;
+}
+.chat-footer textarea {
+    flex: 1;
+    border: none;
+    padding: 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    resize: none;
+    overflow: hidden;
+}
+.chat-footer button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 50%;
+    width: 45px;
+    height: 45px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+/* Custom scrollbar styles */
+.chat-body::-webkit-scrollbar {
+    width: 12px;
+}
+.chat-body::-webkit-scrollbar-thumb {
+    background-color: #007bff;
+    border-radius: 10px;
+    border: 3px solid #ffffff;
+}
+.chat-body::-webkit-scrollbar-track {
+    background: #e9ecef;
+    border-radius: 10px;
+}
+/* Loading animation */
+.loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+.loading span {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #007bff;
+    border-radius: 50%;
+    animation: loading 0.8s infinite alternate;
+}
+.loading span:nth-child(2) {
+    animation-delay: 0.2s;
+}
+.loading span:nth-child(3) {
+    animation-delay: 0.4s;
+}
+@keyframes loading {
+    from {
+        transform: scale(1);
+        opacity: 1;
+    }
+    to {
+        transform: scale(1.5);
+        opacity: 0.5;
+    }
+}
