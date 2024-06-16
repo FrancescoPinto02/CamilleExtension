@@ -1,26 +1,54 @@
-// The module 'vscode' contains the VS Code extensibility API
-// Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import * as fs from 'fs';
+import * as path from 'path';
 
-// This method is called when your extension is activated
-// Your extension is activated the very first time the command is executed
-export function activate(context: vscode.ExtensionContext) {
+// Funzione per ottenere il contenuto del file e convertirlo in una stringa
+function getWebviewContent(context: vscode.ExtensionContext, panel: vscode.WebviewPanel): string {
+    const htmlPath = path.join(context.extensionPath, 'src', 'index.html');
+    let htmlContent = fs.readFileSync(htmlPath, 'utf8');
 
-	// Use the console to output diagnostic information (console.log) and errors (console.error)
-	// This line of code will only be executed once when your extension is activated
-	console.log('Congratulations, your extension "camilleextension" is now active!');
+    const scriptPathOnDisk = vscode.Uri.file(path.join(context.extensionPath, 'src', 'scripts.js'));
+    const scriptUri = panel.webview.asWebviewUri(scriptPathOnDisk);
 
-	// The command has been defined in the package.json file
-	// Now provide the implementation of the command with registerCommand
-	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('camilleextension.helloWorld', () => {
-		// The code you place here will be executed every time your command is executed
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from CamilleExtension!');
-	});
+    const stylePathOnDisk = vscode.Uri.file(path.join(context.extensionPath, 'src', 'styles.css'));
+    const styleUri = panel.webview.asWebviewUri(stylePathOnDisk);
 
-	context.subscriptions.push(disposable);
+    // Sostituisci i placeholder nel file HTML con gli URI effettivi
+    htmlContent = htmlContent.replace(/<script src="scripts.js"><\/script>/, `<script src="${scriptUri}"></script>`);
+    htmlContent = htmlContent.replace(/<link rel="stylesheet" href="style.css">/, `<link rel="stylesheet" href="${styleUri}">`);
+
+    return htmlContent;
 }
 
-// This method is called when your extension is deactivated
+// Attivazione dell'estensione
+export function activate(context: vscode.ExtensionContext) {
+    context.subscriptions.push(
+        vscode.commands.registerCommand('Camille.showChat', () => {
+            // Crea e mostra il pannello della webview
+            const panel = vscode.window.createWebviewPanel(
+                'camilleChat', // Identificatore univoco per la webview
+                'Camille Chat', // Titolo della webview
+                vscode.ViewColumn.Two, // Posizione della webview nell'editor
+                {
+                    enableScripts: true, // Abilita l'esecuzione di JavaScript nella webview
+                    localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))] // Cartelle consentite per le risorse locali
+                }
+            );
+
+            // Assegna il contenuto HTML alla webview
+            panel.webview.html = getWebviewContent(context, panel);
+
+            // Gestisci eventuali messaggi inviati dalla webview
+            panel.webview.onDidReceiveMessage(
+                message => {
+                    vscode.window.showInformationMessage(`Messaggio dalla webview: ${message}`);
+                },
+                undefined,
+                context.subscriptions
+            );
+        })
+    );
+}
+
+// Disattiva l'estensione
 export function deactivate() {}

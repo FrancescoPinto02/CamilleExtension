@@ -14,8 +14,8 @@
   "contributes": {
     "commands": [
       {
-        "command": "camilleextension.helloWorld",
-        "title": "Hello World"
+        "command": "Camille.showChat",
+        "title": "Chat with Camille"
       }
     ]
   },
