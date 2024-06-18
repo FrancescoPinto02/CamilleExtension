@@ -99,6 +99,7 @@ body {
     align-items: center;
     justify-content: center;
     padding: 10px;
+    width: auto;
 }
 .loading span {
     display: inline-block;
@@ -124,4 +125,33 @@ body {
         transform: scale(1.5);
         opacity: 0.5;
     }
+}
+
+/* Styling for code blocks */
+.code-container {
+    position: relative;
+    max-width: 100%;
+    overflow: auto;
+    margin-top: 15px;
+}
+.code-container pre {
+    white-space: pre;
+    word-break: normal; 
+    overflow-x: auto; 
+    background: #f8f9fa;
+    padding: 0;
+    border-radius: 5px;
+    font-size: 0.7em;
+}
+.code-container button.copy-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #007bff;
+}
+.code-container button.copy-btn i {
+    font-size: 1rem;
 }

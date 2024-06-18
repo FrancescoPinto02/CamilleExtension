@@ -81,6 +81,8 @@ function sendMessage() {
 
             // Scroll to the bottom
             chatBody.scrollTop = chatBody.scrollHeight;
+            // Highlight code blocks in the new messages
+            hljs.highlightAll();
         })
         .catch(error => {
             console.error('Error:', error);
@@ -115,8 +117,45 @@ function autoResize(textarea) {
 }
 
 function formatMessage(text) {
-    return text.replace(/\n/g, '<br>');
+    // Pattern per riconoscere i blocchi di codice Python
+    const codeBlockPattern = /```python([\s\S]*?)```/g;
+    let formattedText = '';
+    let lastIndex = 0;
+
+    text.replace(codeBlockPattern, (match, code, offset) => {
+        // Aggiunge testo normale con sostituzione di \n con <br>
+        formattedText += text.slice(lastIndex, offset).replace(/\n/g, '<br>');
+        // Aggiunge blocco di codice senza sostituzione di \n
+        formattedText += `<div class="code-container">
+                            <button class="copy-btn" onclick="copyToClipboard(this)"><i class="fas fa-copy"></i></button>
+                            <pre><code class="language-python">${code}</code></pre>
+                        </div>`;
+        lastIndex = offset + match.length;
+    });
+
+    // Aggiunge eventuale testo rimanente dopo l'ultimo blocco di codice
+    formattedText += text.slice(lastIndex).replace(/\n/g, '<br>');
+
+    return formattedText;
 }
+
+
+// Funzione per copiare il codice negli appunti
+function copyToClipboard(button) {
+    const code = button.nextElementSibling.innerText;
+    navigator.clipboard.writeText(code).then(() => {
+        // Cambia l'icona per indicare il successo
+        button.innerHTML = '<i class="fas fa-check"></i>';
+        setTimeout(() => {
+            // Ripristina l'icona dopo un secondo
+            button.innerHTML = '<i class="fas fa-copy"></i>';
+        }, 1000);
+    }).catch(err => {
+        console.error('Error copying text: ', err);
+    });
+}
+
+
 
 window.onload = function() {
     getOrGenerateGUID();
