@@ -72,11 +72,18 @@ function sendMessage() {
             chatBody.removeChild(loadingMessage);
 
             data.forEach(botResponse => {
-                // Append bot message with API response
-                const botMessage = document.createElement('div');
-                botMessage.classList.add('chat-message', 'bot');
-                botMessage.innerHTML = `<div class="message">${formatMessage(botResponse.text)}</div>`;
-                chatBody.appendChild(botMessage);
+                if (botResponse.text && botResponse.text.startsWith("<!DOCTYPE html>")) {
+                    const reportContainer = document.createElement('div');
+                    reportContainer.classList.add('report');
+                    reportContainer.innerHTML = `<iframe srcdoc="${botResponse.text.replace(/"/g, '&quot;')}"></iframe>`;
+                    chatBody.appendChild(reportContainer);
+                } else {
+                    // Append bot message with API response
+                    const botMessage = document.createElement('div');
+                    botMessage.classList.add('chat-message', 'bot');
+                    botMessage.innerHTML = `<div class="message">${formatMessage(botResponse.text)}</div>`;
+                    chatBody.appendChild(botMessage);
+                }
             });
 
             // Scroll to the bottom
@@ -164,4 +171,33 @@ window.onload = function() {
 // Gestione dell'evento unload per eliminare il GUID quando la finestra viene chiusa
 window.addEventListener('beforeunload', function() {
     clearGUID();
+});
+
+function downloadTestFile() {
+    // Contenuto del file di prova
+    const fileContent = `
+        <!DOCTYPE html>
+        <html lang="it">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>File di Prova</title>
+        </head>
+        <body>
+            <h1>Questo è un file di prova</h1>
+        </body>
+        </html>
+    `;
+
+    const vscode = acquireVsCodeApi();
+    vscode.postMessage({
+        command: 'downloadReport',
+        content: fileContent
+    });
+}
+
+document.addEventListener('keydown', function(event) {
+    if (event.key === 'r' || event.key === 'R') {
+        downloadTestFile();
+    }
 });

@@ -40,8 +40,26 @@ export function activate(context: vscode.ExtensionContext) {
 
             // Gestisci eventuali messaggi inviati dalla webview
             panel.webview.onDidReceiveMessage(
-                message => {
-                    vscode.window.showInformationMessage(`Messaggio dalla webview: ${message}`);
+                async message => {
+                    switch (message.command){
+                        case 'downloadReport':
+                            // Apri una finestra di dialogo per la selezione della cartella
+                            const folderUri = await vscode.window.showOpenDialog({
+                                canSelectFolders: true,
+                                canSelectFiles: false,
+                                canSelectMany: false,
+                                openLabel: 'Seleziona la cartella di destinazione'
+                            });
+
+                            if (folderUri && folderUri[0]) {
+                                const filePath = path.join(folderUri[0].fsPath, 'file_di_prova.html');
+                                fs.writeFileSync(filePath, message.content);
+                                vscode.window.showInformationMessage('File scaricato: ' + filePath);
+                            } else {
+                                vscode.window.showErrorMessage('Nessuna cartella selezionata');
+                            }
+                            return;
+                    }
                 },
                 undefined,
                 context.subscriptions

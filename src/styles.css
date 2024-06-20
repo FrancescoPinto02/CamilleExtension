@@ -53,6 +53,27 @@ body {
     word-break: break-word;
     overflow-wrap: break-word;
 }
+
+.report {
+    display: flex;
+    width: calc(100% - 40px); /* Larghezza della chat meno padding */
+    margin: 10px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.report iframe {
+    width: 100%; /* Larghezza al 100% del contenitore report */
+    max-width: 100%;
+    height: 300px; /* Altezza fissa, adattabile alle tue esigenze */
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    margin: 10px;
+}
+
 .chat-footer {
     display: flex;
     padding: 10px 20px;
