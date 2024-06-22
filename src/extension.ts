@@ -52,7 +52,7 @@ export function activate(context: vscode.ExtensionContext) {
                             });
 
                             if (folderUri && folderUri[0]) {
-                                const filePath = path.join(folderUri[0].fsPath, 'file_di_prova.html');
+                                const filePath = path.join(folderUri[0].fsPath, 'CamilleReport.html');
                                 fs.writeFileSync(filePath, message.content);
                                 vscode.window.showInformationMessage('File scaricato: ' + filePath);
                             } else {

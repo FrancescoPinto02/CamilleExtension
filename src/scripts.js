@@ -1,3 +1,5 @@
+const vscode = acquireVsCodeApi();
+
 // Funzione per generare un GUID (UUID)
 function generateGUID() {
     return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
@@ -74,8 +76,14 @@ function sendMessage() {
             data.forEach(botResponse => {
                 if (botResponse.text && botResponse.text.startsWith("<!DOCTYPE html>")) {
                     const reportContainer = document.createElement('div');
-                    reportContainer.classList.add('report');
-                    reportContainer.innerHTML = `<iframe srcdoc="${botResponse.text.replace(/"/g, '&quot;')}"></iframe>`;
+                    reportContainer.classList.add('report-container');
+                    reportContainer.innerHTML = `
+                        <div class="report">
+                            <iframe srcdoc="${botResponse.text.replace(/"/g, '&quot;')}"></iframe>
+                        </div>
+                        <button class="download-btn" onclick="downloadReport('${encodeURIComponent(botResponse.text)}')">
+                            <i class="fas fa-download"></i>
+                        </button>`;
                     chatBody.appendChild(reportContainer);
                 } else {
                     // Append bot message with API response
@@ -162,8 +170,6 @@ function copyToClipboard(button) {
     });
 }
 
-
-
 window.onload = function() {
     getOrGenerateGUID();
 };
@@ -173,31 +179,11 @@ window.addEventListener('beforeunload', function() {
     clearGUID();
 });
 
-function downloadTestFile() {
-    // Contenuto del file di prova
-    const fileContent = `
-        <!DOCTYPE html>
-        <html lang="it">
-        <head>
-            <meta charset="UTF-8">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>File di Prova</title>
-        </head>
-        <body>
-            <h1>Questo è un file di prova</h1>
-        </body>
-        </html>
-    `;
-
-    const vscode = acquireVsCodeApi();
+function downloadReport(encodedContent) {
+    const decodedContent = decodeURIComponent(encodedContent);
+    
     vscode.postMessage({
         command: 'downloadReport',
-        content: fileContent
+        content: decodedContent
     });
 }
-
-document.addEventListener('keydown', function(event) {
-    if (event.key === 'r' || event.key === 'R') {
-        downloadTestFile();
-    }
-});

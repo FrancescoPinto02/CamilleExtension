@@ -54,6 +54,10 @@ body {
     overflow-wrap: break-word;
 }
 
+.report-container {
+    display: flex;
+}
+
 .report {
     display: flex;
     width: calc(100% - 40px); /* Larghezza della chat meno padding */
@@ -62,6 +66,7 @@ body {
     border: 1px solid #ccc;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .report iframe {
@@ -175,4 +180,14 @@ body {
 }
 .code-container button.copy-btn i {
     font-size: 1rem;
+}
+
+.download-btn {
+    margin: auto;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: #000000;
+    font-size: 1.5rem;
+    padding: 5px;
 }
