@@ -35,6 +35,7 @@ body {
     margin-bottom: 15px;
     display: flex;
     word-wrap: break-word;
+    font-size: 0.85em;
 }
 .chat-message.user .message {
     background: #007bff;

@@ -26,9 +26,9 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.commands.registerCommand('Camille.showChat', () => {
             // Crea e mostra il pannello della webview
             const panel = vscode.window.createWebviewPanel(
-                'camilleChat', // Identificatore univoco per la webview
-                'Camille Chat', // Titolo della webview
-                vscode.ViewColumn.Two, // Posizione della webview nell'editor
+                'camilleChat', // Id
+                'Camille Chat', // Titolo
+                vscode.ViewColumn.Two, // Posizione
                 {
                     enableScripts: true, // Abilita l'esecuzione di JavaScript nella webview
                     localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))] // Cartelle consentite per le risorse locali
