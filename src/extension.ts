@@ -31,6 +31,7 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.ViewColumn.Two, // Posizione
                 {
                     enableScripts: true, // Abilita l'esecuzione di JavaScript nella webview
+                    retainContextWhenHidden: true,
                     localResourceRoots: [vscode.Uri.file(path.join(context.extensionPath, 'src'))] // Cartelle consentite per le risorse locali
                 }
             );
